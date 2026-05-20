@@ -8,7 +8,8 @@ import React,{
   TouchableHighlight,
   TouchableOpacity,
   NavigatorIOS,
-  Component
+  Component,
+  Alert
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Dimensions from 'Dimensions';
@@ -45,6 +46,11 @@ export default class MyIndex extends Component{
 
   }
   componentDidMount(){
+    Alert.alert(
+      '温馨提示',
+      '本网站正在升级中，部分功能可能暂时无法使用，敬请谅解！',
+      [{text: '我知道了'}]
+    );
     fetch('http://api.gujia007.com/v1/flash-data')
         .then((res) => {
          
