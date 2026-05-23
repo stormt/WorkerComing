@@ -9,7 +9,8 @@ import React,{
   TouchableOpacity,
   NavigatorIOS,
   Component,
-  Alert
+  Alert,
+  AppState
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Dimensions from 'Dimensions';
@@ -21,10 +22,10 @@ export default class MyIndex extends Component{
     super(props);
    
     this.state = {
-
       imageurls:[]
     }
-
+    this._lastAlertDate = null;
+    this._handleAppStateChange = this._handleAppStateChange.bind(this);
   }
   banner(urls){
 
@@ -45,12 +46,35 @@ export default class MyIndex extends Component{
       });
 
   }
+  _checkDailyReminder(){
+    var now = new Date();
+    var hour = now.getHours();
+    var todayStr = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+    if (hour === 8 && this._lastAlertDate !== todayStr) {
+      this._lastAlertDate = todayStr;
+      Alert.alert(
+        '新品推荐',
+        '今日有新产品上线，欢迎前往线下门店选购！',
+        [{text: '知道了'}]
+      );
+    }
+  }
+  _handleAppStateChange(appState){
+    if (appState === 'active') {
+      this._checkDailyReminder();
+    }
+  }
   componentDidMount(){
     Alert.alert(
       '温馨提示',
       '本网站正在升级中，部分功能可能暂时无法使用，敬请谅解！',
       [{text: '我知道了'}]
     );
+    this._checkDailyReminder();
+    this._reminderTimer = setInterval(() => {
+      this._checkDailyReminder();
+    }, 60000);
+    AppState.addEventListener('change', this._handleAppStateChange);
     fetch('http://api.gujia007.com/v1/flash-data')
         .then((res) => {
          
@@ -68,6 +92,12 @@ export default class MyIndex extends Component{
     
   }
   
+  componentWillUnmount(){
+    if (this._reminderTimer) {
+      clearInterval(this._reminderTimer);
+    }
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
   render() {
     
     let urls = this.state.imageurls; 
