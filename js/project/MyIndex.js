@@ -16,6 +16,7 @@ import Swiper from 'react-native-swiper';
 import Dimensions from 'Dimensions';
 import ServiceType from './serviceType';
 import Home from './Home.js';
+import Fireworks from './Fireworks.js';
 var width = Dimensions.get('window').width;
 export default class MyIndex extends Component{
   constructor(props){
@@ -130,6 +131,7 @@ export default class MyIndex extends Component{
           <ServiceType navigator={this.props.navigator} navComponent={this.props.navComponent}/>
        </ScrollView>
        
+       <Fireworks />
        </View>
        );
 
