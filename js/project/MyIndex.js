@@ -14,6 +14,7 @@ import Swiper from 'react-native-swiper';
 import Dimensions from 'Dimensions';
 import ServiceType from './serviceType';
 import Home from './Home.js';
+import RedPacketRain from './RedPacketRain';
 var width = Dimensions.get('window').width;
 export default class MyIndex extends Component{
   constructor(props){
@@ -93,7 +94,7 @@ export default class MyIndex extends Component{
           
           <ServiceType navigator={this.props.navigator} navComponent={this.props.navComponent}/>
        </ScrollView>
-       
+       <RedPacketRain onPacketPress={() => alert('恭喜抢到红包！')} />
        </View>
        );
 
